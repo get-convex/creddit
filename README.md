@@ -1,8 +1,8 @@
 # Creddit
 
-This is the _before_ version of a very simple Reddit clone we're going to port
+This is the _after_ version of a very simple Reddit clone we ported
 to [Convex](https://convex.dev). Convex enables you to add global state to this
-local app in a matter of minutes. We'll also deploy the application on
+local app in a matter of minutes. We also deploy the application on
 [Netlify](https://netlify.com) so it can be accessed anywhere in the world.
 
 ## Instructions
@@ -32,6 +32,7 @@ The app UI uses some basic components from [Material UI](https://mui.com/).
 
 ## Next Steps
 
-If you want to jump forward to the finished product check out the [`convex`
-branch](https://github.com/get-convex/creddit/tree/convex) of this repository.
-Otherwise head on over to [the Convex docs](https://docs.convex.dev) to learn more.
+Head on over to [the Convex docs](https://docs.convex.dev) to learn more.
+
+See the [`main` branch](https://github.com/get-convex/creddit/tree/main) for
+the starting point for this tutorial.

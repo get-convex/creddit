@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useState, FormEvent } from "react";
 import moment from "moment";
 import Button from "@mui/material/Button";
@@ -17,38 +16,20 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Post } from "../lib/common";
-import { v4 as uuidv4 } from "uuid";
+import { useMutation, useQuery } from "../convex/_generated";
 
 const Home: NextPage = () => {
-  const [posts, setPosts] = useState<Post[]>([]); // list of posts in sorted order
+  const posts = useQuery("listPosts") ?? []; // convex query to list posts
+  const upvote = useMutation("upvote"); // convex mutation to upvote a post
+  const addPost = useMutation("addPost"); // convex mutation to add a post
   const [newPostTitle, setNewPostTitle] = useState("");
 
-  // Create a new post, add it to posts array, sort by vote count.
   async function handleAddPost(event: FormEvent) {
     event.preventDefault();
     if (newPostTitle) {
       setNewPostTitle("");
-      const post: Post = {
-        id: uuidv4(), // random unique post id
-        title: newPostTitle,
-        date: Date.now(),
-        votes: 1,
-      };
-      console.log("posting", post);
-      setPosts((posts) => [...posts, post].sort((a, b) => b.votes - a.votes));
+      await addPost(newPostTitle);
     }
-  }
-
-  // Upvote post with given id and re-sort posts array.
-  async function handleUpvote(id: string) {
-    console.log("upvoting", id);
-    setPosts((posts) =>
-      posts
-        .map((post: Post) =>
-          post.id === id ? { ...post, votes: post.votes + 1 } : post
-        )
-        .sort((a, b) => b.votes - a.votes)
-    );
   }
 
   return (
@@ -71,9 +52,9 @@ const Home: NextPage = () => {
       <List sx={{ width: "100%", maxWidth: 600 }}>
         {posts.map((post: Post) => (
           <ListItem
-            key={post.id}
+            key={post._id.toString()}
             secondaryAction={
-              <IconButton onClick={() => handleUpvote(post.id)}>
+              <IconButton onClick={() => upvote(post._id)}>
                 <ThumbUpIcon />
               </IconButton>
             }
